@@ -3,15 +3,44 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-require("@rails/ujs").start()
-require("turbolinks").start()
-require("@rails/activestorage").start()
-require("channels")
+require("@rails/ujs").start();
 
+var ReactRailsUJS = require("react_ujs");
+require("turbolinks").start();
+// Add Turbolinks to the global namespace:
+window.Turbolinks = Turbolinks;
+// Remove previous event handlers and add new ones:
+ReactRailsUJS.detectEvents();
 
+require("@rails/activestorage").start();
+require("channels");
+
+var jQuery = require("jquery");
+
+// import jQuery from "jquery";
+global.$ = global.jQuery = jQuery;
+window.$ = window.jQuery = jQuery;
+
+require("bootstrap");
+require("admin-lte");
+
+require("../lib/flash.js");
+
+require("bootstrap-datepicker");
+
+import { cocoonInitializer } from "cocoon/app/assets/javascripts/cocoon";
+
+// to initialize cocoon ...
+cocoonInitializer($, jQuery);
+
+require("../lib/dateUpdater");
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
 // or the `imagePath` JavaScript helper below.
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+// Support component names relative to this directory:
+var componentRequireContext = require.context("components", true);
+var ReactRailsUJS = require("react_ujs");
+ReactRailsUJS.useContext(componentRequireContext);
